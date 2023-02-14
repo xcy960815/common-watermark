@@ -10,3 +10,4 @@ shims-vue.d.ts
 .prettierrc.js
 src
 vue.config.js    
+README.md
