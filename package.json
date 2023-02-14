@@ -19,6 +19,11 @@
     "bugs": {
         "url": "https://github.com/xcy960815/common-watermark/issues"
     },
+    "keywords": [
+        "水印",
+        "watermark",
+        "前端水印"
+    ],
     "types": "./types/index.d.ts",
     "homepage": "https://github.com/xcy960815/common-watermark#readme",
     "devDependencies": {
