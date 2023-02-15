@@ -8,7 +8,7 @@ import { watermark } from 'common-watermark';
 export default defineComponent({
   mounted() {
     const app = document.body;
-    watermark.setWatermark('我是水印,我是水印', app);
+    watermark.setWatermark('我是水印,我是水印,我是水印,我是水印,我是水印,我是水印', app);
   },
 });
 </script>

@@ -15,24 +15,18 @@ const id = '1.23452384164.123412415';
 const createWatermark = (content: string, element: HTMLElement): string => {
     if (!element) return "";
 
-    if (document.getElementById(id) !== null) {
-        try {
-            element.removeChild<HTMLElement>(document.getElementById(id)!);
-        } catch (error) {
-            console.error(error);
-        }
-    }
+    if (document.getElementById(id) !== null) element.removeChild<HTMLElement>(document.getElementById(id)!);
 
     const canvasNode = document.createElement('canvas');
     canvasNode.width = 250;
     canvasNode.height = 200;
     const canvasRenderingContext2D: CanvasRenderingContext2D = canvasNode.getContext('2d')!;
-    const contents = content.split(',');
     canvasRenderingContext2D.rotate((-20 * Math.PI) / 180);
-    canvasRenderingContext2D.font = '20px Vedana';
+    canvasRenderingContext2D.font = '16px Vedana';
     canvasRenderingContext2D.fillStyle = 'rgba(0, 0, 0, 0.1)';
     canvasRenderingContext2D.textAlign = 'center';
     canvasRenderingContext2D.textBaseline = 'middle';
+    const contents = content.split(',');
     contents.forEach((content, i) => canvasRenderingContext2D.fillText(content, canvasNode.width / 2, canvasNode.height / 2 + i * 20));
     const divNode = document.createElement('div');
     divNode.id = id;
