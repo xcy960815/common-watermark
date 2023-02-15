@@ -6,7 +6,12 @@ export interface IWatermark {
 let timer: NodeJS.Timeout;
 
 const id = '1.23452384164.123412415';
-
+/**
+ * @desc 原理就是创建一个canvas，然后将canvas转成base64的图片，然后将图片作为背景图，然后将这个背景图添加到页面中
+ * @param {string} content 
+ * @param {HTMLElement} element 
+ * @returns {string}
+ */
 const createWatermark = (content: string, element: HTMLElement): string => {
     if (!element) return "";
 
@@ -24,7 +29,7 @@ const createWatermark = (content: string, element: HTMLElement): string => {
     const canvasRenderingContext2D: CanvasRenderingContext2D = canvasNode.getContext('2d')!;
     const contents = content.split(',');
     canvasRenderingContext2D.rotate((-20 * Math.PI) / 180);
-    canvasRenderingContext2D.font = '16px Vedana';
+    canvasRenderingContext2D.font = '20px Vedana';
     canvasRenderingContext2D.fillStyle = 'rgba(0, 0, 0, 0.1)';
     canvasRenderingContext2D.textAlign = 'center';
     canvasRenderingContext2D.textBaseline = 'middle';

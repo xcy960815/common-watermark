@@ -14,7 +14,10 @@
         "type": "git",
         "url": "git+https://github.com/xcy960815/common-watermark.git"
     },
-    "author": "xcy960815",
+    "author": {
+        "name": "xcy960815",
+        "email": "18763006837@163.com"
+    },
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/xcy960815/common-watermark/issues"

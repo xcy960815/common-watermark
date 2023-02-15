@@ -13,12 +13,8 @@ export default {
     {
       format: 'umd',
       file: 'dist/index.umd.js',
-      name: 'example',
+      name: 'CommonWatermark',
     },
-    // {
-    //     format: 'cjs',
-    //     file: 'dist/index.cjs.js',
-    // },
     {
       format: 'es',
       file: 'dist/index.esm.js',
