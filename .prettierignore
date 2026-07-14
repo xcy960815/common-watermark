@@ -1,10 +1,6 @@
 node_modules/
-.DS_Store
 dist/
 types/
-.vite/
 docs/.vitepress/cache/
 docs/.vitepress/dist/
-coverage/
-.idea/
-.vscode/
+pnpm-lock.yaml

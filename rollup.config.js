@@ -1,44 +1,63 @@
-import typescript from 'rollup-plugin-typescript2';
-import sourceMaps from 'rollup-plugin-sourcemaps';
-import { terser } from 'rollup-plugin-terser';
-import { nodeResolve } from '@rollup/plugin-node-resolve'; // 将外部引入的js打包进来
-import babel from 'rollup-plugin-babel';
-import del from 'rollup-plugin-delete'; //
-import commonjs from '@rollup/plugin-commonjs'; // 将CommonJS模块转换为ES6, 方便rollup直接调用
-import livereload from 'rollup-plugin-livereload';
-const isProduction = process.env.NODE_ENV === 'production';
-export default {
-  input: './src/index.ts',
-  output: [
-    {
-      format: 'umd',
-      file: 'dist/index.umd.js',
-      name: 'CommonWatermark',
-    },
-    {
-      format: 'es',
-      file: 'dist/index.esm.js',
-    },
-  ],
-  plugins: [
-    del({
-      targets: ['dist'],
-    }),
-    nodeResolve(),
-    commonjs({
-      include: 'node_modules/**',
-    }),
-    isProduction && terser(),
-    babel({
-      exclude: 'node_modules/**',
-    }),
-    // 热更新
-    !isProduction && livereload(),
-    typescript({
-      exclude: 'node_modules/**',
-      useTsconfigDeclarationDir: true,
-      extensions: ['.js', '.ts', '.tsx'],
-    }),
-    sourceMaps(),
-  ],
-};
+const fs = require('node:fs');
+const path = require('node:path');
+const commonjs = require('@rollup/plugin-commonjs');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
+const terser = require('@rollup/plugin-terser');
+const typescript = require('@rollup/plugin-typescript');
+const { dts } = require('rollup-plugin-dts');
+
+const input = path.resolve(__dirname, 'src/core/watermark.ts');
+const distDir = path.resolve(__dirname, 'dist');
+const typesDir = path.resolve(__dirname, 'types');
+
+fs.rmSync(distDir, { recursive: true, force: true });
+fs.rmSync(typesDir, { recursive: true, force: true });
+fs.mkdirSync(distDir, { recursive: true });
+fs.mkdirSync(typesDir, { recursive: true });
+
+module.exports = [
+  {
+    input,
+    output: [
+      {
+        file: path.join(distDir, 'index.esm.js'),
+        format: 'es',
+      },
+      {
+        file: path.join(distDir, 'index.umd.js'),
+        format: 'umd',
+        name: 'CommonWatermark',
+      },
+      {
+        file: path.join(distDir, 'index.umd.min.js'),
+        format: 'umd',
+        name: 'CommonWatermark',
+        plugins: [terser()],
+      },
+    ],
+    plugins: [
+      nodeResolve({
+        browser: true,
+        extensions: ['.mjs', '.js', '.json', '.ts'],
+      }),
+      commonjs(),
+      typescript({
+        tsconfig: './tsconfig.build.json',
+      }),
+    ],
+  },
+  {
+    input,
+    output: [
+      {
+        file: path.join(typesDir, 'index.d.ts'),
+        format: 'es',
+      },
+    ],
+    plugins: [
+      dts({
+        tsconfig: './tsconfig.build.json',
+      }),
+    ],
+  },
+];

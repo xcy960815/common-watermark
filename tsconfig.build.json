@@ -2,8 +2,9 @@
   "compilerOptions": {
     "target": "ES2015",
     "module": "ESNext",
+    "rootDir": "./src",
     "strict": true,
-    "noEmit": true,
+    "sourceMap": false,
     "noImplicitAny": false,
     "skipLibCheck": true,
     "moduleResolution": "bundler",
@@ -11,6 +12,5 @@
     "forceConsistentCasingInFileNames": true,
     "lib": ["ES2015", "DOM"]
   },
-  "include": ["src/**/*.ts", "demo/**/*.ts"],
-  "exclude": ["dist", "types", "docs/.vitepress"]
+  "include": ["src/core/**/*.ts", "src/types.ts"]
 }
