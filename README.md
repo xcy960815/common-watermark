@@ -1,41 +1,51 @@
 # common-watermark
 
-[![npm version](https://img.shields.io/npm/v/common-watermark.svg)](https://www.npmjs.com/package/common-watermark) [![license](https://img.shields.io/npm/l/common-watermark.svg)](https://opensource.org/licenses/MIT) [![npm downloads](https://img.shields.io/npm/dm/common-watermark.svg)](https://www.npmjs.com/package/common-watermark) [![CI](https://github.com/xcy960815/common-watermark/actions/workflows/ci.yml/badge.svg)](https://github.com/xcy960815/common-watermark/actions/workflows/ci.yml) [![GitHub issues](https://img.shields.io/github/issues/xcy960815/common-watermark.svg)](https://github.com/xcy960815/common-watermark/issues) [![GitHub stars](https://img.shields.io/github/stars/xcy960815/common-watermark.svg?style=social&label=Stars)](https://github.com/xcy960815/common-watermark) [![GitHub forks](https://img.shields.io/github/forks/xcy960815/common-watermark.svg?style=social&label=Fork)](https://github.com/xcy960815/common-watermark)
+[![npm version](https://img.shields.io/npm/v/common-watermark.svg)](https://www.npmjs.com/package/common-watermark) [![npm downloads](https://img.shields.io/npm/dm/common-watermark.svg)](https://www.npmjs.com/package/common-watermark) [![CI](https://github.com/xcy960815/common-watermark/actions/workflows/ci.yml/badge.svg)](https://github.com/xcy960815/common-watermark/actions/workflows/ci.yml) [![license](https://img.shields.io/npm/l/common-watermark.svg)](https://opensource.org/licenses/MIT) [![GitHub issues](https://img.shields.io/github/issues/xcy960815/common-watermark.svg)](https://github.com/xcy960815/common-watermark/issues) [![GitHub stars](https://img.shields.io/github/stars/xcy960815/common-watermark.svg?style=social&label=Stars)](https://github.com/xcy960815/common-watermark)
 
-`common-watermark` 是一个轻量、框架无关的浏览器端水印库。它通过 Canvas 生成平铺水印，并覆盖到指定 DOM 容器上。
+[中文文档](./README.zh-CN.md)
 
-- 支持原生 JavaScript、TypeScript、Vue、React 等浏览器项目
-- 支持多个容器同时添加水印
-- 支持同一容器更新水印内容与主动销毁
-- 内置 TypeScript 类型声明
+- Documentation: [https://xcy960815.github.io/common-watermark/](https://xcy960815.github.io/common-watermark/)
+- Repository: [https://github.com/xcy960815/common-watermark](https://github.com/xcy960815/common-watermark)
 
-完整中文文档见 [common-watermark 文档站](https://xcy960815.github.io/common-watermark/)。
+`common-watermark` is a lightweight, framework-agnostic browser watermark library. It renders repeated text as a Canvas background and overlays it on a target DOM container.
 
-## 安装
+## Features
+
+- Plain JavaScript API for JavaScript, TypeScript, Vue, React, and other browser projects
+- Independent instances for multiple containers
+- Safe replacement when setting a watermark on the same container again
+- Automatic overlay-size updates when the target or its content changes
+- Cleanup for observers, listeners, timers, and the overlay node
+- TypeScript declarations included
+
+## Installation
 
 ```bash
 pnpm add common-watermark
 ```
 
-## 快速开始
+```bash
+npm install common-watermark
+```
+
+## Quick Start
 
 ```ts
 import { watermark } from 'common-watermark';
 
 const container = document.body;
-watermark.setWatermark('仅供内部使用', container);
+watermark.setWatermark('Internal use only', container);
 
-// 不再需要时清理监听器和覆盖层。
 watermark.removeWatermark(container);
 ```
 
-水印文本可使用逗号或换行符分成多行：
+Use either commas or line breaks to render a multi-line watermark:
 
 ```ts
-watermark.setWatermark('内部资料\n请勿外传', document.body);
+watermark.setWatermark('Internal document\nDo not share', document.body);
 ```
 
-## 在框架中使用
+## Using It in Frameworks
 
 ### Vue
 
@@ -44,7 +54,7 @@ import { onMounted, onUnmounted } from 'vue';
 import { watermark } from 'common-watermark';
 
 onMounted(() => {
-  watermark.setWatermark('仅供内部使用', document.body);
+  watermark.setWatermark('Internal use only', document.body);
 });
 
 onUnmounted(() => {
@@ -60,11 +70,11 @@ import { watermark } from 'common-watermark';
 
 export function App() {
   useEffect(() => {
-    watermark.setWatermark('仅供内部使用', document.body);
+    watermark.setWatermark('Internal use only', document.body);
     return () => watermark.removeWatermark(document.body);
   }, []);
 
-  return <main>应用内容</main>;
+  return <main>Application content</main>;
 }
 ```
 
@@ -72,32 +82,45 @@ export function App() {
 
 ### `watermark.setWatermark(content, element)`
 
-在 `element` 上添加水印。同一个元素再次调用会先清理旧水印，再按新内容创建；不同元素可以独立使用。
+Adds a watermark to `element`. Calling it again for the same element removes the previous instance before creating the new one. Different elements can have independent watermarks.
 
-| 参数      | 类型          | 说明                               |
-| --------- | ------------- | ---------------------------------- |
-| `content` | `string`      | 水印文本；逗号或换行符可分隔多行。 |
-| `element` | `HTMLElement` | 需要覆盖水印的容器。               |
+| Parameter | Type          | Description                                                   |
+| --------- | ------------- | ------------------------------------------------------------- |
+| `content` | `string`      | Watermark text. Commas and line breaks create separate lines. |
+| `element` | `HTMLElement` | Container that receives the watermark overlay.                |
 
 ### `watermark.removeWatermark(element)`
 
-移除指定容器的水印，同时清理相关观察器、事件监听器和计时器。组件卸载或页面模块销毁时应调用此方法。
+Removes the watermark from `element` and cleans up its observers, event listeners, timers, and overlay node.
 
-## 使用边界
+| Parameter | Type          | Description                                  |
+| --------- | ------------- | -------------------------------------------- |
+| `element` | `HTMLElement` | Container whose watermark should be removed. |
 
-- 本库仅适用于浏览器环境；不要在纯 Node.js 运行时调用水印方法。
-- SSR 项目中可以保留导入，但只能在客户端生命周期调用 API。
-- 水印通过 `data:` URL 作为背景图。若站点 CSP 限制 `img-src data:`，需先调整 CSP 策略。
-- 覆盖层不会拦截鼠标和键盘交互，但其层级与尺寸策略属于可见行为；升级版本前请验证页面布局。
+## Browser and SSR Notes
 
-## 构建产物
+- This package is intended for browser environments. Do not call its API in a pure Node.js runtime.
+- In SSR applications, importing the package is safe, but call the API only from a client-side lifecycle hook.
+- Watermark images use a `data:` URL. Your Content Security Policy must allow `img-src data:`.
+- The overlay does not intercept pointer events. Verify its visual layering and size in your application before upgrading.
 
-- `dist/index.esm.js`：供现代打包器使用的 ESM 版本。
-- `dist/index.umd.js`：供 UMD 或传统接入方式使用的版本。
-- `dist/index.umd.min.js`：压缩后的 UMD 版本。
-- `types/index.d.ts`：打包后的 TypeScript 声明。
+## CDN / UMD Example
 
-## 本地开发
+```html
+<script src="https://unpkg.com/common-watermark/dist/index.umd.min.js"></script>
+<script>
+  CommonWatermark.watermark.setWatermark('Internal use only', document.body);
+</script>
+```
+
+## Build Artifacts
+
+- `dist/index.esm.js`: ESM bundle for modern bundlers
+- `dist/index.umd.js`: UMD bundle for traditional integrations
+- `dist/index.umd.min.js`: Minified UMD bundle
+- `types/index.d.ts`: Bundled TypeScript declaration
+
+## Development
 
 ```bash
 pnpm install --frozen-lockfile
@@ -108,19 +131,19 @@ pnpm build
 pnpm docs:dev
 ```
 
-## 项目结构
+## Project Structure
 
 ```text
 src/
-  core/watermark.ts  # 水印实例、渲染与生命周期实现
-  main.ts            # Vite 本地演示入口
-  main.css           # 本地演示样式
-  types.ts           # 公共类型
-index.html           # Vite 本地演示页面
-docs/                # VitePress 中文文档
-types/               # Rollup 构建生成的声明文件
+  core/watermark.ts  # Library entry, rendering, and lifecycle logic
+  main.ts            # Vite demo entry
+  main.css           # Vite demo styles
+  types.ts           # Public types
+index.html           # Vite demo page
+docs/                # VitePress documentation
+types/               # Generated declaration bundle
 ```
 
 ## License
 
-[MIT](https://opensource.org/license/mit/)
+MIT
