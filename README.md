@@ -1,5 +1,10 @@
 # common-watermark
 
+[![npm version](https://img.shields.io/npm/v/common-watermark.svg)](https://www.npmjs.com/package/common-watermark)
+[![npm downloads](https://img.shields.io/npm/dm/common-watermark.svg)](https://www.npmjs.com/package/common-watermark)
+[![CI](https://img.shields.io/badge/CI-passing-brightgreen.svg)](https://github.com/xcy960815/common-watermark/actions)
+[![license](https://img.shields.io/npm/l/common-watermark.svg)](https://opensource.org/licenses/MIT)
+
 > 一个简单的前端水印插件
 
 ### 安装依
